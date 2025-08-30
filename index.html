@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="NewGAO.png" type="image/png">
+  <title>Google App Opener</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --button-bg: #222;
+      --button-text: #ffffff;
+      --settings-btn-bg: #222;
+      --settings-btn-text: #ffffff;
+      --title-ambient: #222;
+      --hover-scale: 1.05;
+      --hover-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      --active-btn-bg: #90ee90;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s;
+    }
+
+    #clock {
+      position: fixed;
+      top: 15px;
+      left: 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 40px;
+    }
+
+    .glow {
+      text-shadow: 0 0 10px var(--title-ambient);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px var(--title-ambient), 0 0 10px var(--title-ambient);
+      }
+      to {
+        text-shadow: 0 0 10px var(--title-ambient), 0 0 20px var(--title-ambient);
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    @keyframes pulse-title {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+
+    .link-button {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      padding: 15px 25px;
+      font-size: 1.2em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+    }
+
+    .link-button:hover {
+      background: #e0e0e0;
+    }
+
+    .settings-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      background: var(--settings-btn-bg);
+      color: var(--settings-btn-text);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .settings-panel {
+      display: none;
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      width: 250px;
+    }
+
+    .settings-panel.show {
+      display: block;
+    }
+
+    .option {
+      margin-bottom: 15px;
+    }
+
+    .option button {
+      margin-top: 5px;
+      margin-right: 5px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background: var(--button-bg);
+      color: var(--button-text);
+      cursor: pointer;
+    }
+
+    .option button.active {
+      background: var(--active-btn-bg) !important;
+      color: black;
+    }
+
+    .option label {
+      display: block;
+      margin: 8px 0;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #0072ff;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div id="clock"><strong>Current time:</strong> <span id="timeDisplay"></span></div>
+  <h1 id="title" class="glow">Google App Opener</h1>
+
+  <div class="button-container">
+    <button class="link-button" id="btnGoogle" onclick="window.open('https://www.google.com', '_blank')">Google</button>
+    <button class="link-button" id="btnYouTube" onclick="window.open('https://www.youtube.com', '_blank')">YouTube</button>
+    <button class="link-button" id="btnGmail" onclick="window.open('https://mail.google.com', '_blank')">Gmail</button>
+  </div>
+
+  <footer>OopsMonaDidIt's Google App Opener. (Unofficial)</footer>
+
+  <button class="settings-btn" onclick="toggleSettings()" id="settingsBtn">Change Settings</button>
+
+  <div class="settings-panel" id="settingsPanel">
+    <div class="option">
+      <strong>Change Mode:</strong><br>
+      <button id="lightModeBtn" onclick="setMode('light')">Light Mode</button>
+      <button id="darkModeBtn" onclick="setMode('dark')">Dark Mode</button>
+    </div>
+    <div class="option">
+      <strong>Help Centre:</strong><br>
+      <button onclick="window.open('https://support.google.com', '_blank')">Open Help</button>
+    </div>
+    <div class="option">
+      <strong>Animations:</strong><br>
+      <label>Movement: <label class="toggle-switch">
+        <input type="checkbox" id="movementToggle" checked onchange="toggleMovement(this)" />
+        <span class="slider"></span>
+      </label></label>
+      <label>Effect: <label class="toggle-switch">
+        <input type="checkbox" id="effectToggle" checked onchange="toggleEffect(this)" />
+        <span class="slider"></span>
+      </label></label>
+      <label>Clock: <label class="toggle-switch">
+        <input type="checkbox" id="clockToggle" checked onchange="toggleClock(this)" />
+        <span class="slider"></span>
+      </label></label>
+    </div>
+  </div>
+
+  <script>
+    let movementEnabled = true;
+    let effectEnabled = true;
+    let shakeInterval, pulseInterval;
+    let shakeIndex = 0;
+
+    function toggleSettings() {
+      document.getElementById('settingsPanel').classList.toggle('show');
+    }
+
+    function setMode(mode) {
+      const lightBtn = document.getElementById('lightModeBtn');
+      const darkBtn = document.getElementById('darkModeBtn');
+      lightBtn.classList.remove('active');
+      darkBtn.classList.remove('active');
+
+      if (mode === 'light') {
+        document.documentElement.style.setProperty('--bg-color', '#ffffff');
+        document.documentElement.style.setProperty('--text-color', '#000000');
+        document.documentElement.style.setProperty('--button-bg', '#222');
+        document.documentElement.style.setProperty('--button-text', '#ffffff');
+        document.documentElement.style.setProperty('--settings-btn-bg', '#222');
+        document.documentElement.style.setProperty('--settings-btn-text', '#ffffff');
+        document.documentElement.style.setProperty('--title-ambient', '#222');
+        lightBtn.classList.add('active');
+      } else {
+        document.documentElement.style.setProperty('--bg-color', '#1c1c1c');
+        document.documentElement.style.setProperty('--text-color', '#f0f0f0');
+        document.documentElement.style.setProperty('--button-bg', '#f5f5f5');
+        document.documentElement.style.setProperty('--button-text', '#000000');
+        document.documentElement.style.setProperty('--settings-btn-bg', '#f5f5f5');
+        document.documentElement.style.setProperty('--settings-btn-text', '#000000');
+        document.documentElement.style.setProperty('--title-ambient', '#ffffff');
+        darkBtn.classList.add('active');
+      }
+    }
+
+    function toggleMovement(toggle) {
+      movementEnabled = toggle.checked;
+      if (movementEnabled) {
+        startButtonShake();
+        startTitleEffect();
+      } else {
+        clearInterval(shakeInterval);
+        clearInterval(pulseInterval);
+      }
+    }
+
+    function toggleEffect(toggle) {
+      effectEnabled = toggle.checked;
+      const title = document.getElementById('title');
+      if (effectEnabled) {
+        title.classList.add('glow');
+        title.style.textShadow = '';
+      } else {
+        title.classList.remove('glow');
+        title.style.textShadow = 'none';
+      }
+    }
+
+    function toggleClock(toggle) {
+      const clock = document.getElementById('clock');
+      clock.style.display = toggle.checked ? 'block' : 'none';
+    }
+
+    function updateClock() {
+  const now = new Date();
+  const timeDisplay = document.getElementById('timeDisplay');
+  timeDisplay.textContent = now.toLocaleTimeString();
+}
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function startButtonShake() {
+      const buttons = ["btnGoogle", "btnYouTube", "btnGmail"];
+      shakeInterval = setInterval(() => {
+        if (!movementEnabled) return;
+        const btn = document.getElementById(buttons[shakeIndex % buttons.length]);
+        shakeIndex++;
+        btn.style.animation = 'shake 0.5s';
+        setTimeout(() => btn.style.animation = '', 500);
+      }, 10000);
+    }
+
+    function startTitleEffect() {
+      pulseInterval = setInterval(() => {
+        if (!movementEnabled) return;
+        const title = document.getElementById('title');
+        title.style.animation = 'pulse-title 1s';
+        setTimeout(() => {
+          if (effectEnabled) {
+            title.classList.add('glow');
+          }
+        }, 1000);
+      }, 15000);
+    }
+
+    startButtonShake();
+    startTitleEffect();
+  </script>
+</body>
+</html>
