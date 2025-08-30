@@ -1,2 +1,2 @@
 # Google-App-Opener
-This is an Unofficial Google's Product by OopsMonaDidIt and can open google apps! Updates will come for this
+⚠️ This is an Unofficial Website by OopsMonaDidIt (Me) and is not harmful website
