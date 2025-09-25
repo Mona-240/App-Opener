@@ -8,7 +8,9 @@ This Website is made by OopsMonaDidIt (Nickname: Mona/A. Moeed)
 This Website is hosted by GitHub Pages!
 
 Hope you've read the terms of use and agree with them
-If you DON'T agree with the terms of use! Then it'll result in a punishment,
+If you DISAGREE with the terms of use,
+Then it'll result in a punishment,
 So Follow the Terms of Use!
 
 2025 - Now © App Opener | All rights Reserved
+
